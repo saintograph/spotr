@@ -1,17 +1,18 @@
-// Polyfill
 import 'babel-polyfill'
-
-// Libraries
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import createBrowserHistory from 'history/lib/createBrowserHistory'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import App from './app'
+import stations from './api/washington_metro'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { departures } from './api/mtaapi'
 
-// ID of the DOM element to mount app on
+
+injectTapEventPlugin()
 const DOM_APP_EL_ID = 'app'
 
-// Base styling
-import './index.css'
-
-// Render the app
-import App from './app'
-ReactDOM.render(<App />, document.getElementById(DOM_APP_EL_ID))
+ReactDOM.render(
+    <MuiThemeProvider>
+        <App stations={ stations } api={ departures }/>
+    </MuiThemeProvider>
+    , document.getElementById(DOM_APP_EL_ID))

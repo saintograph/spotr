@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["/bundle.js","1269e92de71a78f7cde20c47b3ff49ba"],["/custom.css","6d848b8281b5c5804f2e7c0e62efeb4f"],["/index.html","163c72861c160a09becf452befbf85df"]];
+var precacheConfig = [["/bundle.js","104bcb8cba92bd610c4002a10e1389ed"],["/custom.css","d41d8cd98f00b204e9800998ecf8427e"],["/flexboxgrid.min.css","01df170306275f4440f6bfe0919d30f1"],["/index.html","28c3252e76c0588b5b62665640534b74"],["/res/mipmap-hdpi/ic_launcher.png","c6ff11ee4ed7c1e1062bb5514d47b93e"],["/res/mipmap-mdpi/ic_launcher.png","0dcd5e4409faeadb08e9568e3ec701f0"],["/res/mipmap-xhdpi/ic_launcher.png","1b3dff66fcaf893b6290da3c89fbb105"],["/res/mipmap-xxhdpi/ic_launcher.png","9eedbafc377ae42beef20a7b8a294a06"],["/res/mipmap-xxxhdpi/ic_launcher.png","cc9f3d3a80a443a1a687cb8e9b7014bd"],["/res/web_hi_res_512.png","ace37b137a872ae0c41a9f4e6628ab08"],["/reset.min.css","93e42565f156d067f72108759177a957"]];
 var cacheName = 'sw-precache-v2--' + (self.registration ? self.registration.scope : '');
 
 

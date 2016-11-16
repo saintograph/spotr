@@ -17,7 +17,8 @@ class App extends Component {
 		this.state = {
 			fromStation: '',
 			destinationStation: '',
-			result: null
+			result: null,
+			info: 'Please choose your location and a destination'
 		}
 	}
 
@@ -51,10 +52,14 @@ class App extends Component {
 			}
 		)
 		.catch((error) => {
-			localforage.getItem(storageKey)
-			.then((response) => {
-				self.setState({ result: response })
-			})
+			if( isNaN(storageKey)) {
+				this.setState({info: "You're offline. Only previously searched stations are available"})
+			} else {
+				localforage.getItem(storageKey)
+				.then((response) => {
+					self.setState({ result: response })
+				})
+			}
 		})
 	}
 
@@ -105,8 +110,8 @@ class App extends Component {
 				</div>
 				<div style={{marginTop: 20}}>
 					{(this.state.result) ?
-						<RenderResult destinationStation={this.state.destinationStation} result={this.state.result} destinationStation={this.state.destinationStation}/> :
-						<div className="row center-xs"><div className="col-xs-6"><h2>Loading</h2></div></div>
+						<RenderResult destinationStation={this.state.destinationStation} result={this.state.result}/> :
+						<div className="row center-xs"><div className="col-xs-6"><h2>{this.state.info}</h2></div></div>
 					}
 				</div>
 			</div>

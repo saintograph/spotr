@@ -6,7 +6,7 @@ function RenderResult ({ result, destinationStation }) {
     return (
         <div className="row center-xs">
             <div className="col-xs-7">
-                <List style={{textAlign: 'left'}}>
+                <List>
                     <ListItem primaryText="Destination" secondaryText={destinationStation} />
                     <ListItem primaryText="Distance to Destination" secondaryText={CompositeMiles} />
                     <ListItem primaryText="Time to Destination" secondaryText={RailTime} />

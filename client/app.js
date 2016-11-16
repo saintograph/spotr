@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
-import Radium from 'radium'
 import axios from 'axios'
 import AutoComplete from 'material-ui/AutoComplete'
 import RaisedButton from 'material-ui/RaisedButton'
 import AppNavBar from './common/AppNavBar'
-import RenderResult from './components/RenderResult'
+import RenderResult from './app_components/RenderResult'
 import localforage from 'localforage'
 
 class App extends Component {
@@ -16,7 +15,6 @@ class App extends Component {
 		this.handleDestinationStation = this.handleDestinationStation.bind(this)
 		this.setState = this.setState.bind(this)
 		this.state = {
-			posts: [],
 			fromStation: '',
 			destinationStation: '',
 			result: null
@@ -48,6 +46,7 @@ class App extends Component {
 				localforage.setItem(storageKey, response.data)
 					.then(() => {
 						this.setState({ result: response.data })
+						console.log(this.state.result)
 					})
 			}
 		)
@@ -56,7 +55,7 @@ class App extends Component {
 			.then((response) => {
 				self.setState({ result: response })
 			})
-		}).done()
+		})
 	}
 
 	render () {
@@ -106,7 +105,7 @@ class App extends Component {
 				</div>
 				<div style={{marginTop: 20}}>
 					{(this.state.result) ?
-						<RenderResult result={this.state.result} destinationStation={this.state.destinationStation}/> :
+						<RenderResult destinationStation={this.state.destinationStation} result={this.state.result} destinationStation={this.state.destinationStation}/> :
 						<div className="row center-xs"><div className="col-xs-6"><h2>Loading</h2></div></div>
 					}
 				</div>

@@ -18,7 +18,7 @@ React starter kit that is more minimal than essential
 ``` bash
 # Setup
 git clone https://github.com/winfredselwyn/React-PWA-starter.git
-cd minimal-react
+cd React-PWA-starter
 npm install
 
 # Once-off compiles

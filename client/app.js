@@ -5,7 +5,7 @@ import AutoComplete from 'material-ui/AutoComplete'
 import RaisedButton from 'material-ui/RaisedButton'
 import AppNavBar from './common/AppNavBar'
 import RenderResult from './components/RenderResult'
-
+import localforage from 'localforage'
 
 class App extends Component {
 
@@ -36,6 +36,8 @@ class App extends Component {
 		const allStations = this.props.stations
 		const fromCode = allStations.get(this.state.fromStation)
 		const toCode = allStations.get(this.state.destinationStation)
+		const storageKey = fromCode + toCode
+		const self = this
 		const config = {
 			headers: { 'api_key': '3f0c4978522943898c1daa2602a23c4a' }
 		}
@@ -43,11 +45,18 @@ class App extends Component {
 			'https://api.wmata.com/Rail.svc/json/jSrcStationToDstStationInfo?' + `FromStationCode=${fromCode}` + `&ToStationCode=${toCode}`
 			, config)
 		.then((response) => {
-				console.log(response.data)
-				this.setState({ result: response.data })
+				localforage.setItem(storageKey, response.data)
+					.then(() => {
+						this.setState({ result: response.data })
+					})
 			}
 		)
-		.catch((error) => { console.log(error) })
+		.catch((error) => {
+			localforage.getItem(storageKey)
+			.then((response) => {
+				self.setState({ result: response })
+			})
+		}).done()
 	}
 
 	render () {

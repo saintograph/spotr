@@ -34,6 +34,7 @@ npm run compile
 # Development build
 npm start
 
-# note : development server does not load 'assets/flexboxgrid.min.css' and 'assets/reset.min.css' with index.html
+# *note : development server does not load 'assets/flexboxgrid.min.css' and 'assets/reset.min.css' with index.html
+# **note : Webpack and Gulp bundles everything into the assets folder. To run the contents within the folder as a PWA, SSL encryption needed.
 
 ```

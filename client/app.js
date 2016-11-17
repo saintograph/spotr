@@ -19,7 +19,7 @@ class App extends Component {
 			destinationStation: '',
 			result: null,
 			times: null,
-			info: 'Please choose your location and a destination'
+			info: ""
 		}
 	}
 
@@ -41,40 +41,33 @@ class App extends Component {
 		const config = {
 			headers: { 'api_key': '3f0c4978522943898c1daa2602a23c4a' }
 		}
-		function getStationArrivalTimes () {
-			return axios.get(
-				'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + `${fromCode}`
-			, config)
-		}
+		const api = 'https://api.wmata.com/'
 
-		function getStationToStation () {
-			return axios.get(
-				'https://api.wmata.com/Rail.svc/json/jSrcStationToDstStationInfo?' + `FromStationCode=${fromCode}` + `&ToStationCode=${toCode}`
-			, config)
-		}
+		// function getStationArrivalTimes () {
+		// 	return axios.get(
+		// 		'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + `${fromCode}`
+		// 	, config)
+		// }
 
-		axios.all([getStationArrivalTimes(), getStationToStation()])
-		.then( axios.spread(function (responseTime, response) {
-			const responseData = [responseTime, response]
-			console.log(responseData[1].data)
-			console.log(responseData[0].data)
-			localforage.setItem(storageKey, responseData)
-				.then(() => { self.setState({ times: responseData[0].data, result: responseData[1].data }) })
+		// function getStationToStation () {
+		// 	return axios.get(
+		// 		'https://api.wmata.com/Rail.svc/json/jSrcStationToDstStationInfo?' + `FromStationCode=${fromCode}` + `&ToStationCode=${toCode}`
+		// 	, config)
+		// }
+
+		axios.get('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + `${fromCode}`, config)
+			.then((response) => {
+				localforage.setItem(storageKey, response)
+				.then((response) => {
+					self.setState({ result: response.data })
+				})
 			}
-		))
-
-		// .then((response) => {
-		// 		localforage.setItem(storageKey, response.data)
-		// 			.then(() => {
-		// 				this.setState({ result: response.data })
-		// 				console.log(this.state.result)
-		// 			})
-		// 	}
-		// )
+		)
 		.catch((error) => {
 			if ( isNaN(storageKey)) {
-				this.setState({info: "You're offline. Only previously searched stations are available"})
-			} else {
+				this.setState({ info: "You're offline. Only previously searched stations are available" })
+			}
+			else {
 				localforage.getItem(storageKey)
 				.then((response) => {
 					self.setState({ result: response })
@@ -129,9 +122,9 @@ class App extends Component {
 					</div>
 				</div>
 				<div style={{marginTop: 20}}>
-					{(this.state.result) ?
-						<RenderResult destinationStation={this.state.destinationStation} result={this.state.result} times={this.state.times}/> :
-						<div className="row center-xs"><div className="col-xs-6"><h2>{this.state.info}</h2></div></div>
+					{(this.state.result === null) ?
+						<div className="row center-xs"><div className="col-xs-6"><h2>{this.state.info}</h2></div></div> :
+						<RenderResult destinationStation={this.state.destinationStation} result={this.state.result} times={this.state.times}/>
 					}
 				</div>
 			</div>

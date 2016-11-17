@@ -10,6 +10,9 @@ function RenderResult ({ result, times, destinationStation }) {
     const OffPeakFare = '$' + RailFare.OffPeakTime
     const PeakFare = '$' + RailFare.PeakTime
     const SpecialFare = '$' + RailFare.SeniorDisabled
+    const firstTrain = Trains[0].Min + ' minute(s)'
+    const secondTrain = Trains[1].Min + ' minute(s)'
+    const thirdTrain = Trains[2].Min + ' minutes(s)'
     
     return (
         <div className="row center-xs">
@@ -20,15 +23,15 @@ function RenderResult ({ result, times, destinationStation }) {
                         <span>
                             {Trains[0] === undefined || Trains[0].Min === "" ?
                                 <ListItem primaryText="Sorry, please check later" /> :
-                                <ListItem primaryText="Next train in" secondaryText={Trains[0].Min}/>
+                                <ListItem primaryText="Train arriving in" secondaryText={(Trains[0].Min === "BRD") ? "Train is now boarding" : firstTrain }/>
                             }
                             {Trains[1] === undefined || Trains[1].Min === ""  ?
                                 "" :
-                                <ListItem primaryText="Another train in" secondaryText={Trains[1].Min}/>
+                                <ListItem primaryText="Next train arriving in" secondaryText={secondTrain}/>
                             }
                             {Trains[2] === undefined || Trains[2].Min === ""  ?
                                 "" :
-                                <ListItem primaryText="Another train in" secondaryText={Trains[2].Min}/>
+                                <ListItem primaryText="Third train in" secondaryText={thirdTrain}/>
                             }
                         </span>
                     }

@@ -16,7 +16,7 @@ function RenderResult ({ result, times, destinationStation }) {
             <div className="col-xs-7">
                 <List>
                     <ListItem primaryText="Destination" secondaryText={toStation} />
-                    {Trains[0] === undefined ? <ListItem primaryText="No departure times from your station available, please check in a few minutes" /> :
+                    {Trains === undefined ? <ListItem primaryText="No departure times from your station available, please check in a few minutes" /> :
                         <span>
                             {Trains[0] === undefined || Trains[0].Min === "" ?
                                 <ListItem primaryText="Sorry, please check later" /> :

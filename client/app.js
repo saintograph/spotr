@@ -19,7 +19,7 @@ class App extends Component {
 			destinationStation: '',
 			result: null,
 			times: null,
-			info: ""
+			info: ''
 		}
 	}
 
@@ -32,7 +32,7 @@ class App extends Component {
 	}
 
 	handleSubmit () {
-		event.preventDefault()
+		// event.preventDefault()
 		const allStations = this.props.stations
 		const fromCode = allStations.get(this.state.fromStation)
 		const toCode = allStations.get(this.state.destinationStation)
@@ -43,38 +43,34 @@ class App extends Component {
 		}
 		const api = 'https://api.wmata.com/'
 
-		// function getStationArrivalTimes () {
-		// 	return axios.get(
-		// 		'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + `${fromCode}`
-		// 	, config)
-		// }
+		function getStationToStation () {
+			return axios.get(
+				api + 'Rail.svc/json/jSrcStationToDstStationInfo?' + `FromStationCode=${fromCode}` + `&ToStationCode=${toCode}`
+			, config)
+		}
 
-		// function getStationToStation () {
-		// 	return axios.get(
-		// 		'https://api.wmata.com/Rail.svc/json/jSrcStationToDstStationInfo?' + `FromStationCode=${fromCode}` + `&ToStationCode=${toCode}`
-		// 	, config)
-		// }
+		function getStationArrivalTimes () {
+			return axios.get(
+				api + 'StationPrediction.svc/json/GetPrediction/' + `${fromCode}`
+			, config)
+		}
 
-		axios.get('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + `${fromCode}`, config)
-			.then((response) => {
-				localforage.setItem(storageKey, response)
-				.then((response) => {
-					self.setState({ result: response.data })
-				})
-			}
-		)
-		.catch((error) => {
-			if ( isNaN(storageKey)) {
-				this.setState({ info: "You're offline. Only previously searched stations are available" })
-			}
-			else {
+		axios.all([getStationToStation(), getStationArrivalTimes()])
+			.then(axios.spread((response, responseArrival) => {
+				const allResponses = [response, responseArrival]
+				self.setState({ result: response.data, times: responseArrival.data })
+				localforage.setItem(storageKey, allResponses)
+			}))
+			.catch((error) => {
+				console.log(storageKey)
 				localforage.getItem(storageKey)
-				.then((response) => {
-					self.setState({ result: response })
+				.then((value) => {
+					self.setState({ result: value[0].data, times: value[1].data })
 				})
-			}
-		})
+			})
 	}
+
+
 
 	render () {
 		const stations = this.props.stations
